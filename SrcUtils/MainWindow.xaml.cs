@@ -2,9 +2,11 @@
 using System.IO;
 using System.Reactive.Disposables;
 using System.Windows;
+using System.Windows.Controls;
 using HCGStudio.SrcUtils.Models;
 using HCGStudio.SrcUtils.ViewModels;
 using ReactiveUI;
+using EventExtensions = System.Windows.EventExtensions;
 
 namespace HCGStudio.SrcUtils
 {
@@ -55,6 +57,7 @@ namespace HCGStudio.SrcUtils
                         }
                     }
                 });
+
 
             });
         }

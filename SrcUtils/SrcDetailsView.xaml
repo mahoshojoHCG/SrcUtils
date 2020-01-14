@@ -6,21 +6,30 @@
                                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                                 xmlns:local="clr-namespace:HCGStudio.SrcUtils"
-                                mc:Ignorable="d" 
+                                mc:Ignorable="d"
+                                xmlns:ui="http://schemas.modernwpf.com/2019"
+                                MinWidth="7000"
                                 xmlns:viewModels="clr-namespace:HCGStudio.SrcUtils.ViewModels">
+    <Control.ContextMenu>
+        <ContextMenu >
+            <MenuItem Header="打开" FontWeight="Bold" Name="OpenMenu"/>
+            <MenuItem Header="打开所在文件夹" Name="OpenFolderMenu"/>
+            <Separator/>
+            <MenuItem Header="复制到" Name="CopyTo"/>
+            <MenuItem Header="移动到" Name="MoveTo"/>
+            <Separator/>
+            <MenuItem Header="复制" Name="Copy"/>
+            <Separator/>
+            <MenuItem Header="详细信息" Name="ViewMenu"/>
+            <Separator/>
+            <MenuItem Header="删除" Name="DeleteMenu"/>
+        </ContextMenu>
+    </Control.ContextMenu>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Grid.ContextMenu>
-            <ContextMenu >
-                <MenuItem Header="打开" FontWeight="Bold" Name="OpenMenu"/>
-                <MenuItem Header="详细信息" Name="ViewMenu"/>
-                <Separator/>
-                <MenuItem Header="删除" Name="DeleteMenu"/>
-            </ContextMenu>
-        </Grid.ContextMenu>
         <Image x:Name="IconImage" Margin="6" Width="64" Height="64"
                HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBlock Grid.Column="1" TextWrapping="WrapWithOverflow" 
@@ -29,7 +38,7 @@
             <LineBreak />
             <Run FontSize="12" x:Name="DescriptionRun"/>
             <LineBreak />
-            <Hyperlink x:Name="OpenButton">查看</Hyperlink>
+            <Hyperlink x:Name="OpenButton">打开</Hyperlink>
             <Hyperlink x:Name="Details">详细信息</Hyperlink>
         </TextBlock>
     </Grid>

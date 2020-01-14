@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Windows;
 using HCGStudio.SrcUtils.Models;
 using ReactiveUI;
 
@@ -26,7 +28,7 @@ namespace HCGStudio.SrcUtils.ViewModels
                 _value.TagsString = value;
                 this.RaisePropertyChanged();
             }
-        
+
         }
 
         public ReactiveCommand<Unit, Unit> OpenFile { get; }
@@ -34,17 +36,44 @@ namespace HCGStudio.SrcUtils.ViewModels
         public ReactiveCommand<Unit, Unit> ModifyTags { get; }
         public ReactiveCommand<Unit, Unit> ModifyPath { get; }
         public ReactiveCommand<Unit, Unit> ViewDetails { get; }
+        public ReactiveCommand<Unit,Unit> OpenFolder { get; }
         public ReactiveCommand<Unit, Unit> DeleteSource { get; }
 
         public SourceViewModel(Source src)
         {
             _value = src;
-            OpenFile = ReactiveCommand.Create(() =>
+
+            OpenFile = ReactiveCommand.CreateFromTask(async () =>
             {
-                Process.Start(new ProcessStartInfo(Value.Path)
+                if (!File.Exists(Value.Path) && !Directory.Exists(Value.Path))
                 {
-                    UseShellExecute = true
-                });
+                    var result = MessageBox.Show("无法定位到文件，是否从记录中删除这一项？", "未能找到指定源文件", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        await using var context = new SrcContext();
+                        var toDelete = context.Sources.First(source => source.SourceId == Value.SourceId);
+                        if (toDelete != null)
+                        {
+                            context.Sources.Remove(toDelete);
+                            await context.SaveChangesAsync();
+                        }
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        Process.Start(new ProcessStartInfo(Value.Path)
+                        {
+                            UseShellExecute = true
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message, "错误");
+                    }
+                }
+
             });
 
             ModifyCategory = ReactiveCommand.Create(() =>
@@ -101,6 +130,39 @@ namespace HCGStudio.SrcUtils.ViewModels
             {
                 var window = new SourceDetails(Clone());
                 window.Show();
+            });
+
+            OpenFolder = ReactiveCommand.CreateFromTask(async () =>
+            {
+
+                if (!File.Exists(Value.Path) && !Directory.Exists(Value.Path))
+                {
+                    var result = MessageBox.Show("无法定位到文件，是否从记录中删除这一项？", "未能找到指定源文件", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        await using var context = new SrcContext();
+                        var toDelete = context.Sources.First(source => source.SourceId == Value.SourceId);
+                        if (toDelete != null)
+                        {
+                            context.Sources.Remove(toDelete);
+                            await context.SaveChangesAsync();
+                        }
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        Process.Start(new ProcessStartInfo(Path.GetDirectoryName(Value.Path))
+                        {
+                            UseShellExecute = true
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message, "错误");
+                    }
+                }
             });
         }
 

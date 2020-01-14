@@ -30,11 +30,14 @@ namespace HCGStudio.SrcUtils
 
             this.WhenActivated(disposableRegistration =>
             {
-
                 this.OneWayBind(ViewModel,
                         viewModel => viewModel.Value.Thumbnail,
                         view => view.IconImage.Source,
-                        thumbnail => thumbnail == null ? null : new BitmapImage(new Uri(thumbnail)))
+                        thumbnail =>
+                            thumbnail == null
+                                ? WindowsThumbnailProvider
+                                    .GetThumbnail(ViewModel.Value.Path, 256, 256, ThumbnailOptions.None).ToBitmapImage()
+                                : new BitmapImage(new Uri(thumbnail)))
                     .DisposeWith(disposableRegistration);
 
                 this.OneWayBind(ViewModel,
@@ -72,13 +75,18 @@ namespace HCGStudio.SrcUtils
                         view => view.DeleteMenu)
                     .DisposeWith(disposableRegistration);
 
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.OpenFolder,
+                        view => view.OpenFolderMenu)
+                    .DisposeWith(disposableRegistration);
+
                 this.Events().MouseDoubleClick.Subscribe(e =>
-                {
-                    Process.Start(new ProcessStartInfo(ViewModel.Value.Path)
-                    {
-                        UseShellExecute = true
-                    });
-                });
+               {
+                   Process.Start(new ProcessStartInfo(ViewModel.Value.Path)
+                   {
+                       UseShellExecute = true
+                   });
+               });
             });
         }
     }

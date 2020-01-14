@@ -9,7 +9,7 @@
                             xmlns:ui="http://schemas.modernwpf.com/2019"
                             xmlns:viewModels="clr-namespace:HCGStudio.SrcUtils.ViewModels"
                             mc:Ignorable="d"        
-                            ui:WindowHelper.UseModernWindowStyle="True"
+                            ui:WindowHelper.UseModernWindowStyle="True" MinWidth="800"
                             Title="源管理" Height="450" Width="800" AllowDrop="True">
     <Grid Margin="12">
         <Grid.ColumnDefinitions>
@@ -24,7 +24,9 @@
                    VerticalAlignment="Center" Text="搜索"/>
         <TextBox Grid.Row="0" Grid.Column="1" Margin="6 0 0 0" x:Name="SearchTextBox"  />
         <ListBox x:Name="SearchResultsListBox" Grid.ColumnSpan="3" Grid.Column="0"
-                 Grid.Row="1" Margin="0,6,0,0" HorizontalContentAlignment="Stretch"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                 Grid.Row="1" Margin="0,6,0,0"
+                 Background="White"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        </ListBox>
     </Grid>
 </reactiveui:ReactiveWindow>

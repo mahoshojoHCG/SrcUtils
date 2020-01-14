@@ -5,6 +5,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <RootNamespace>HCGStudio.SrcUtils</RootNamespace>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <Platforms>AnyCPU;x64</Platforms>
+    <ApplicationIcon>SrcMan.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
