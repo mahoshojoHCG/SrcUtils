@@ -30,13 +30,12 @@ namespace HCGStudio.SrcUtils
 
             this.WhenActivated(disposableRegistration =>
             {
-                // Our 4th parameter we convert from Url into a BitmapImage. 
-                // This is an easy way of doing value conversion using ReactiveUI binding.
-                //this.OneWayBind(ViewModel,
-                //        viewModel => viewModel.IconUrl,
-                //        view => view.IconImage.Source,
-                //        url => url == null ? null : new BitmapImage(url))
-                //    .DisposeWith(disposableRegistration);
+
+                this.OneWayBind(ViewModel,
+                        viewModel => viewModel.Value.Thumbnail,
+                        view => view.IconImage.Source,
+                        thumbnail => thumbnail == null ? null : new BitmapImage(new Uri(thumbnail)))
+                    .DisposeWith(disposableRegistration);
 
                 this.OneWayBind(ViewModel,
                         viewModel => viewModel.Value.Name,

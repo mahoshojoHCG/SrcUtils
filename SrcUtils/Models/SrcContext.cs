@@ -41,7 +41,7 @@ namespace HCGStudio.SrcUtils.Models
         public string Description { get; set; }
         [NotMapped] public List<string> Tags => TagsString?.Split(';')?.ToList() ?? new List<string>();
         public string TagsString { get; set; }
-
+        public string Thumbnail { get; set; }
 
         public Source Clone()
         {

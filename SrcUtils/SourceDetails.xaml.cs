@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HCGStudio.SrcUtils.Models;
 using HCGStudio.SrcUtils.ViewModels;
+using Microsoft.Win32;
 using ReactiveUI;
 
 namespace HCGStudio.SrcUtils
@@ -83,9 +84,11 @@ namespace HCGStudio.SrcUtils
                         view => view.Title)
                     .DisposeWith(disposableRegistration);
 
+                //Subscribe Cancel
+                Cancel.Click += (sender, e) => { Close(); };
 
                 //Subscribe Save
-                Save.Click += (async (sender,e) =>
+                Save.Click += async (sender,e) =>
                 {
                     if (string.IsNullOrWhiteSpace(ViewModel.Value.Name))
                     {
@@ -122,7 +125,26 @@ namespace HCGStudio.SrcUtils
                         await context.SaveChangesAsync().ConfigureAwait(false);
                         Close();
                     }
-                });
+                };
+
+                //Subscribe ModifyPath
+                ModifyPath.Click += (sender, e) =>
+                {
+                    var dialog = new OpenFileDialog
+                    {
+                        Multiselect = false,
+                        Title = "选择源",
+                        Filter = "源文件 (*.*)|*.*",
+                        CheckFileExists = true,
+                        InitialDirectory = System.IO.Path.GetDirectoryName(ViewModel.Value.Path),
+                        FileName = System.IO.Path.GetFileName(ViewModel.Value.Path)
+                    };
+
+                    dialog.ShowDialog();
+                    ViewModel.Value.Path = System.IO.Path.GetFullPath(dialog.FileName);
+                    ViewModel.RaisePropertyChanged(nameof(ViewModel.Value));
+                };
+
             });
         }
         public SourceDetails()
