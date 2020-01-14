@@ -1,0 +1,31 @@
+﻿<reactiveUi:ReactiveWindow x:TypeArguments="viewModels:InputViewModel" 
+                           x:Class="HCGStudio.SrcUtils.InputWindow"
+                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                           xmlns:local="clr-namespace:HCGStudio.SrcUtils"
+                           xmlns:viewModels="clr-namespace:HCGStudio.SrcUtils.ViewModels"
+                           xmlns:reactiveUi="http://reactiveui.net"
+                           xmlns:ui="http://schemas.modernwpf.com/2019"
+                           mc:Ignorable="d" ui:WindowHelper.UseModernWindowStyle="True"
+                           Title="InputWindow" Height="160" MinHeight="160"  Width="300" MinWidth="300"
+                           ui:ThemeManager.IsThemeAware="True">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="提示内容" Name="HintText" FontSize="16"/>
+        <TextBox Grid.Row="1" Margin="0 6 0 0" Text="输入内容" Name="InputContent" FontSize="16"/>
+        <Grid Grid.Row="2" Margin="0 6 0 0" HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"  Content="确定" FontSize="16" IsDefault="True" Name="Yes" FontWeight="Medium"/>
+            <Button Grid.Column="1" Content="取消" FontSize="16" Margin="6 0 0 0" Name="No" FontWeight="Light"/>
+        </Grid>
+    </Grid>
+</reactiveUi:ReactiveWindow>

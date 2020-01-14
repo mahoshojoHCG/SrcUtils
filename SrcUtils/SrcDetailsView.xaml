@@ -1,0 +1,36 @@
+﻿<reactiveui:ReactiveUserControl x:Class="HCGStudio.SrcUtils.SrcDetailsView"
+                                x:TypeArguments="viewModels:SourceViewModel"
+                                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                xmlns:reactiveui="http://reactiveui.net"
+                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                                xmlns:local="clr-namespace:HCGStudio.SrcUtils"
+                                mc:Ignorable="d" 
+                                xmlns:viewModels="clr-namespace:HCGStudio.SrcUtils.ViewModels">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.ContextMenu>
+            <ContextMenu >
+                <MenuItem Header="打开" FontWeight="Bold" Name="OpenMenu"/>
+                <MenuItem Header="详细信息" Name="ViewMenu"/>
+                <Separator/>
+                <MenuItem Header="删除" Name="DeleteMenu"/>
+            </ContextMenu>
+        </Grid.ContextMenu>
+        <Image x:Name="IconImage" Margin="6" Width="64" Height="64"
+               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" TextWrapping="WrapWithOverflow" 
+                   Margin="6" VerticalAlignment="Center">
+            <Run FontSize="14" FontWeight="SemiBold" x:Name="TitleRun"/>
+            <LineBreak />
+            <Run FontSize="12" x:Name="DescriptionRun"/>
+            <LineBreak />
+            <Hyperlink x:Name="OpenButton">查看</Hyperlink>
+            <Hyperlink x:Name="Details">详细信息</Hyperlink>
+        </TextBlock>
+    </Grid>
+</reactiveui:ReactiveUserControl>
