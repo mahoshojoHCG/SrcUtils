@@ -13,8 +13,23 @@ namespace HCGStudio.SrcUtils.Models
         public DbSet<Source> Sources { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Category> Categories { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite("Data Source=default.db");
+        {
+            if (Enum.TryParse(App.ConfigurationRoot["DataBaseProvider"],out DataBaseProvider provider))
+            {
+                switch (provider)
+                {
+                    case DataBaseProvider.SqlLite:
+                        options.UseSqlite($"Data Source={App.ConfigurationRoot["SqlLiteDataSource"]}");
+                        break;
+                    case DataBaseProvider.SqlServer:
+                        throw new ArgumentException("SQL Server is not supported in this version.");
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
     }
 
     public class Category

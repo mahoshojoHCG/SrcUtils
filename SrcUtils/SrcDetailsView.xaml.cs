@@ -50,15 +50,18 @@ namespace HCGStudio.SrcUtils
                         view => view.DescriptionRun.Text)
                     .DisposeWith(disposableRegistration);
 
-                this.BindCommand(ViewModel,
-                        viewModel => viewModel.OpenFile,
-                        view => view.OpenButton)
-                    .DisposeWith(disposableRegistration);
 
-                this.BindCommand(ViewModel,
-                        viewModel => viewModel.ViewDetails,
-                        view => view.Details)
-                    .DisposeWith(disposableRegistration);
+                //Remove link beneath the description
+
+                //this.BindCommand(ViewModel,
+                //        viewModel => viewModel.OpenFile,
+                //        view => view.OpenButton)
+                //    .DisposeWith(disposableRegistration);
+
+                //this.BindCommand(ViewModel,
+                //        viewModel => viewModel.ViewDetails,
+                //        view => view.Details)
+                //    .DisposeWith(disposableRegistration);
 
                 this.BindCommand(ViewModel,
                         viewModel => viewModel.OpenFile,

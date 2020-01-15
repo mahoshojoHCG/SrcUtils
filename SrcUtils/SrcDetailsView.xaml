@@ -8,7 +8,7 @@
                                 xmlns:local="clr-namespace:HCGStudio.SrcUtils"
                                 mc:Ignorable="d"
                                 xmlns:ui="http://schemas.modernwpf.com/2019"
-                                MinWidth="7000" AllowDrop="True"
+                                MinWidth="7000" 
                                 xmlns:viewModels="clr-namespace:HCGStudio.SrcUtils.ViewModels">
     <Control.ContextMenu>
         <ContextMenu >
@@ -37,9 +37,9 @@
             <Run FontSize="14" FontWeight="SemiBold" x:Name="TitleRun"/>
             <LineBreak />
             <Run FontSize="12" x:Name="DescriptionRun"/>
-            <LineBreak />
+            <!--<LineBreak />
             <Hyperlink x:Name="OpenButton">打开</Hyperlink>
-            <Hyperlink x:Name="Details">详细信息</Hyperlink>
+            <Hyperlink x:Name="Details">详细信息</Hyperlink>-->
         </TextBlock>
     </Grid>
 </reactiveui:ReactiveUserControl>
