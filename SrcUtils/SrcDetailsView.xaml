@@ -8,7 +8,7 @@
                                 xmlns:local="clr-namespace:HCGStudio.SrcUtils"
                                 mc:Ignorable="d"
                                 xmlns:ui="http://schemas.modernwpf.com/2019"
-                                MinWidth="7000"
+                                MinWidth="7000" AllowDrop="True"
                                 xmlns:viewModels="clr-namespace:HCGStudio.SrcUtils.ViewModels">
     <Control.ContextMenu>
         <ContextMenu >
@@ -18,7 +18,7 @@
             <MenuItem Header="复制到" Name="CopyTo"/>
             <MenuItem Header="移动到" Name="MoveTo"/>
             <Separator/>
-            <MenuItem Header="复制" Name="Copy"/>
+            <MenuItem Header="复制" Name="CopyToClipBoard"/>
             <Separator/>
             <MenuItem Header="详细信息" Name="ViewMenu"/>
             <Separator/>

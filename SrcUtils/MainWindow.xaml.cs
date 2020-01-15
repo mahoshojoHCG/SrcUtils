@@ -38,6 +38,14 @@ namespace HCGStudio.SrcUtils
                         view => view.SearchTextBox.Text)
                     .DisposeWith(disposableRegistration);
 
+                //Drag
+                this.Events().PreviewDragOver.Subscribe(e =>
+                {
+                    e.Handled = true;
+                    e.Effects = DragDropEffects.All;
+                });
+
+                
 
                 this.Events().Drop.Subscribe(e =>
                 {

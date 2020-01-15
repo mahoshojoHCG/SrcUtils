@@ -80,13 +80,34 @@ namespace HCGStudio.SrcUtils
                         view => view.OpenFolderMenu)
                     .DisposeWith(disposableRegistration);
 
+                //Bind CopyTo
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.CopyTo,
+                        view => view.CopyTo)
+                    .DisposeWith(disposableRegistration);
+
+                //Bind MoveTo
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.MoveTo,
+                        view => view.MoveTo)
+                    .DisposeWith(disposableRegistration);
+
+                //Bind CopyClipBoard
+                this.BindCommand(ViewModel,
+                        viewModel => viewModel.CopyToClipBoard,
+                        view => view.CopyToClipBoard)
+                    .DisposeWith(disposableRegistration);
+
                 this.Events().MouseDoubleClick.Subscribe(e =>
-               {
-                   Process.Start(new ProcessStartInfo(ViewModel.Value.Path)
-                   {
-                       UseShellExecute = true
-                   });
-               });
+                {
+                    Process.Start(new ProcessStartInfo(ViewModel.Value.Path)
+                    {
+                        UseShellExecute = true
+                    });
+                });
+
+
+
             });
         }
     }

@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Windows;
+using System.Windows.Forms;
 using HCGStudio.SrcUtils.Models;
+using ModernWpf.Controls;
 using ReactiveUI;
+using Clipboard = System.Windows.Clipboard;
+using MessageBox = System.Windows.MessageBox;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace HCGStudio.SrcUtils.ViewModels
 {
@@ -36,8 +42,11 @@ namespace HCGStudio.SrcUtils.ViewModels
         public ReactiveCommand<Unit, Unit> ModifyTags { get; }
         public ReactiveCommand<Unit, Unit> ModifyPath { get; }
         public ReactiveCommand<Unit, Unit> ViewDetails { get; }
-        public ReactiveCommand<Unit,Unit> OpenFolder { get; }
+        public ReactiveCommand<Unit, Unit> OpenFolder { get; }
         public ReactiveCommand<Unit, Unit> DeleteSource { get; }
+        public ReactiveCommand<Unit, Unit> CopyTo { get; }
+        public ReactiveCommand<Unit, Unit> MoveTo { get; }
+        public ReactiveCommand<Unit, Unit> CopyToClipBoard { get; }
 
         public SourceViewModel(Source src)
         {
@@ -163,6 +172,213 @@ namespace HCGStudio.SrcUtils.ViewModels
                         MessageBox.Show(e.Message, "错误");
                     }
                 }
+            });
+
+            CopyTo = ReactiveCommand.CreateFromTask(async () =>
+            {
+                //for file
+                if (File.Exists(Value.Path))
+                {
+                    var dialog = new SaveFileDialog
+                    {
+                        Title = "选择复制到的位置",
+                        Filter = $"相同文件名的源|{Path.GetFileName(Value.Path)}|更改了文件名的源 (*.*)|*.*",
+                        CheckFileExists = true,
+                        InitialDirectory = Path.GetDirectoryName(Value.Path),
+                        FileName = Path.GetFileName(Value.Path)
+                    };
+
+                    dialog.ShowDialog();
+
+
+                    //Check if source and dest is the same
+                    var realPath = Path.GetFullPath(dialog.FileName);
+                    if (realPath == Value.Path)
+                    {
+                        var contentDialog = new ContentDialog
+                        {
+                            Title = "错误",
+                            Content = "不能复制到相同的位置！",
+                            CloseButtonText = "好"
+                        };
+
+                        await contentDialog.ShowAsync();
+                    }
+                    else
+                    {
+
+                        try
+                        {
+                            File.Copy(Value.Path, realPath, true);
+                        }
+                        catch (Exception e)
+                        {
+                            var contentDialog = new ContentDialog
+                            {
+                                Title = "错误",
+                                Content = e.Message,
+                                CloseButtonText = "好"
+                            };
+
+                            await contentDialog.ShowAsync();
+                        }
+                    }
+
+                }
+                else if (Directory.Exists(Value.Path))
+                {
+                    //For folder
+                    var dialog = new FolderBrowserDialog
+                    {
+                        SelectedPath = Value.Path
+                    };
+
+                    dialog.ShowDialog();
+
+                    var realPath = Path.GetFullPath(dialog.SelectedPath);
+
+                    if (realPath == Value.Path)
+                    {
+                        var contentDialog = new ContentDialog
+                        {
+                            Title = "错误",
+                            Content = "不能复制到相同的位置！",
+                            CloseButtonText = "好"
+                        };
+
+                        await contentDialog.ShowAsync();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            //Copy folders
+                            foreach (var dirPath in Directory.GetDirectories(Value.Path, "*",
+                                SearchOption.AllDirectories))
+                            {
+                                Directory.CreateDirectory(Path.Combine(realPath, dirPath[Value.Path.Length..]));
+                            }
+
+                            //Copy files
+                            foreach (var newPath in Directory.GetFiles(Value.Path, "*.*",
+                                SearchOption.AllDirectories))
+                            {
+                                File.Copy(newPath, Path.Combine(realPath, newPath[Value.Path.Length..]), true);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            var contentDialog = new ContentDialog
+                            {
+                                Title = "错误",
+                                Content = e.Message,
+                                CloseButtonText = "好"
+                            };
+
+                            await contentDialog.ShowAsync();
+                        }
+                    }
+                }
+            });
+
+            MoveTo = ReactiveCommand.CreateFromTask(async () =>
+            {
+                //for file
+                if (File.Exists(Value.Path))
+                {
+                    var dialog = new SaveFileDialog
+                    {
+                        Title = "选择移动到的位置",
+                        Filter = $"相同文件名的源|{Path.GetFileName(Value.Path)}|更改了文件名的源 (*.*)|*.*",
+                        CheckFileExists = true,
+                        InitialDirectory = Path.GetDirectoryName(Value.Path),
+                        FileName = Path.GetFileName(Value.Path)
+                    };
+
+                    dialog.ShowDialog();
+
+
+                    //Check if source and dest is the same
+                    var realPath = Path.GetFullPath(dialog.FileName);
+                    if (realPath == Value.Path)
+                    {
+                        var contentDialog = new ContentDialog
+                        {
+                            Title = "错误",
+                            Content = "不能移动到相同的位置！",
+                            CloseButtonText = "好"
+                        };
+
+                        await contentDialog.ShowAsync();
+                    }
+                    else
+                    {
+
+                        try
+                        {
+                            File.Move(Value.Path, realPath, true);
+                        }
+                        catch (Exception e)
+                        {
+                            var contentDialog = new ContentDialog
+                            {
+                                Title = "错误",
+                                Content = e.Message,
+                                CloseButtonText = "好"
+                            };
+
+                            await contentDialog.ShowAsync();
+                        }
+                    }
+
+                }
+                else if (Directory.Exists(Value.Path))
+                {
+                    //For folder
+                    var dialog = new FolderBrowserDialog
+                    {
+                        SelectedPath = Value.Path
+                    };
+
+                    dialog.ShowDialog();
+
+                    var realPath = Path.GetFullPath(dialog.SelectedPath);
+
+                    if (realPath == Value.Path)
+                    {
+                        var contentDialog = new ContentDialog
+                        {
+                            Title = "错误",
+                            Content = "不能移动到相同的位置！",
+                            CloseButtonText = "好"
+                        };
+
+                        await contentDialog.ShowAsync();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            Directory.Move(Value.Path, realPath);
+                        }
+                        catch (Exception e)
+                        {
+                            var contentDialog = new ContentDialog
+                            {
+                                Title = "错误",
+                                Content = e.Message,
+                                CloseButtonText = "好"
+                            };
+
+                            await contentDialog.ShowAsync();
+                        }
+                    }
+                }
+            });
+
+            CopyToClipBoard = ReactiveCommand.Create(() =>
+            {
+                Clipboard.SetFileDropList(new StringCollection { Value.Path });
             });
         }
 
