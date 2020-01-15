@@ -1,6 +1,6 @@
 {
-    "Channel": "Current",
-    "Version": "1.0.0",
-    "ChangeLog": "First Release",
-    "DownloadLink": "https://github.com/mahoshojoHCG/SrcUtils/releases/tag/1.0.0"
+    "Channel": "Nightly",
+    "Version": "1.0.1",
+    "ChangeLog": "更新dotnet core版本到3.1.1，修正了一些界面，添加了设置文件（即使现在不会有任何作用）",
+    "DownloadLink": "https://github.com/mahoshojoHCG/SrcUtils/releases/download/v1.0.1-beta/SrcMan-v1.0.1-beta.7z"
 }
