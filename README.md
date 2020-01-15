@@ -16,6 +16,10 @@ Apps allows you to manage sources (files) in your PC.
 
 [Home Page](https://reactiveui.net/) [LICENSE](https://github.com/reactiveui/ReactiveUI/blob/master/LICENSE)
 
+### Json.NET
+
+[Home Page](https://www.newtonsoft.com/json) [LICENSE](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md)
+
 ### App Icon
 
 Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](http://www.flaticon.com/)

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reactive.Disposables;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using HCGStudio.SrcUtils.Models;
 using HCGStudio.SrcUtils.ViewModels;
+using ModernWpf.Controls;
 using ReactiveUI;
 using EventExtensions = System.Windows.EventExtensions;
 
@@ -38,6 +41,31 @@ namespace HCGStudio.SrcUtils
                         view => view.SearchTextBox.Text)
                     .DisposeWith(disposableRegistration);
 
+                //Check update
+                this.Events().Activated.Subscribe(async e =>
+                {
+                    var version = await Updater.VersionInfo.GetLeastVersionAsync();
+                    var that = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+                    if (version.Version != Assembly.GetExecutingAssembly().GetName().Version.ToString(3))
+                    {
+                        var updateDialog = new ContentDialog
+                        {
+                            Title = $"有新版本{version.Version}，是否更新？",
+                            Content = $"更新日志：{version.ChangeLog}",
+                            PrimaryButtonText = "是",
+                            CloseButtonText = "否"
+                        };
+                        var result = await updateDialog.ShowAsync();
+                        if (result == ContentDialogResult.Primary)
+                        {
+                            Process.Start(new ProcessStartInfo(version.DownloadLink)
+                            {
+                                UseShellExecute = true
+                            });
+                        }
+                    }
+                });
+
                 //Drag
                 this.Events().PreviewDragOver.Subscribe(e =>
                 {
@@ -45,7 +73,7 @@ namespace HCGStudio.SrcUtils
                     e.Effects = DragDropEffects.All;
                 });
 
-                
+
 
                 this.Events().Drop.Subscribe(e =>
                 {
